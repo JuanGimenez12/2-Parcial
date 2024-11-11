@@ -1,0 +1,56 @@
+import java.util.Scanner;
+
+class Nodo {  // Cambiado a public
+    char dato;
+    Nodo siguiente;
+}
+
+class Lista {  // Cambiado a public
+    Nodo primero;
+}
+
+public class ListaOrdenada {
+    
+    public static void insertarElementoOrdenado(Lista l, char c) {
+        Nodo nuevoNodo = new Nodo();
+        nuevoNodo.dato = c;
+
+        if (l.primero == null || c < l.primero.dato) {      // Si la lista está vacía o el nuevo nodo debe ir al principio
+            nuevoNodo.siguiente = l.primero;
+            l.primero = nuevoNodo;
+        } else {
+            Nodo actual = l.primero;                        // Recorremos la lista para encontrar la posición de inserción
+            while (actual.siguiente != null && actual.siguiente.dato < c) {
+                actual = actual.siguiente;
+            }
+            nuevoNodo.siguiente = actual.siguiente;
+            actual.siguiente = nuevoNodo;
+        }
+    }
+
+    public static void imprimirLista(Lista l) {
+        Nodo actual = l.primero;
+        while (actual != null) {
+            System.out.print(actual.dato + " ");
+            actual = actual.siguiente;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            Lista lista = new Lista();
+            System.out.println("Ingrese letras para ordenar alfabéticamente. Ingrese '*' para terminar:");
+
+            char entrada = scanner.next().charAt(0);
+            while (entrada != '*') {
+                insertarElementoOrdenado(lista, entrada);
+                System.out.println("Ingrese letras para ordenar alfabéticamente. Ingrese '*' para terminar:");
+                entrada = scanner.next().charAt(0);
+            }
+            
+            System.out.println("Contenido de la lista en orden alfabético:");
+            imprimirLista(lista);
+        }
+    }
+}
